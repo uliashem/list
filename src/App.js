@@ -1,23 +1,45 @@
-import logo from './logo.svg';
+import { useState } from 'react';
+import { data } from './data';
 import './App.css';
 
 function App() {
+  const [gifts, setGifts] = useState(data);
+
+  const removeGift = (id) => {
+    let newGifts = gifts.filter(gift => gift.id !== id);
+    setGifts(newGifts);
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <div className='container'>
+        <h1>List of my {gifts.length} gifts</h1>
+      </div>
+
+      {gifts.map((gift => {
+        const {id, itemName, image} = gift;
+
+        return (
+          <div key={id}>
+            <div className='container'>
+              <h2>{id}. {itemName}</h2>
+            </div>
+            
+            <div className='container'>
+              <img src={image} alt='Gift' width="300px"/>
+            </div>
+
+            <div className='container'>
+              <button onClick={() => removeGift(id)}>Delete</button>
+            </div>
+          </div>
+        )
+      }))}
+
+      <div className='container'>
+        <button onClick={() => setGifts([])}>Delete All</button>
+      </div>
+      
     </div>
   );
 }
